@@ -1,11 +1,27 @@
 #lang racket
 
+(define make-pair
+  (lambda (a b)
+    (cons a (cons b '()))))
+
+
+(define zip
+  (lambda (a b)
+    (cond
+      ((null? a) '())
+      (else
+        (cons (make-pair (car a) (car b))
+              (zip (cdr a) (cdr b)))))))
+
+
 (define main
   (lambda () 
     (let ([posts-directory (read-command-line)])
-      (let ([titles (titles-from-directory posts-directory)])
-        (toc-from-titles titles))
-)))
+      (let (
+            [titles (titles-from-directory posts-directory)]
+            [paths (post-files-from-directory posts-directory)])
+        (toc-from-titles (zip titles paths))
+))))
 
 (define titles-from-directory
   (lambda (posts-directory)
@@ -48,13 +64,38 @@
       (read-line fh 'any)
 )))
 
-(define toc-from-titles
+
+(define first-of
+  (lambda (l) (car l)))
+
+(define second-of
+  (lambda (l) (car (cdr l))))
+
+
+(define list-item-from-title-path
+  (lambda (title-path)
+    (let ([title (first-of title-path)]
+          [path (second-of title-path)])
+        (format "* [~a](~a)" title path))))
+
+
+(define list-items-from-titles
   (lambda (titles)
   (string-join 
-    (map (lambda (title) 
-        (format "* ~a" title))
+    (map list-item-from-title-path
         titles)
     "\n"))
 )
+
+
+(define toc-from-titles 
+  (lambda (titles)
+    (string-append
+      (string-append "## Blog Posts\n\n"
+                   (list-items-from-titles titles))
+      "\n")))
+
+
+
 
 (display (main))
