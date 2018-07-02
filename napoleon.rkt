@@ -4,7 +4,6 @@
   (lambda (a b)
     (cons a (cons b '()))))
 
-
 (define zip
   (lambda (a b)
     (cond
@@ -12,7 +11,6 @@
       (else
         (cons (make-pair (car a) (car b))
               (zip (cdr a) (cdr b)))))))
-
 
 (define main
   (lambda () 
@@ -71,13 +69,11 @@
 (define second-of
   (lambda (l) (car (cdr l))))
 
-
 (define list-item-from-title-path
   (lambda (title-path)
     (let ([title (first-of title-path)]
           [path (second-of title-path)])
         (format "* [~a](~a)" title path))))
-
 
 (define list-items-from-titles
   (lambda (titles)
@@ -87,7 +83,6 @@
     "\n"))
 )
 
-
 (define toc-from-titles 
   (lambda (titles)
     (string-append
@@ -95,7 +90,4 @@
                    (list-items-from-titles titles))
       "\n")))
 
-
-
-
-(display (main))
+(provide zip make-pair first-of second-of)
