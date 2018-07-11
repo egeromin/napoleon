@@ -1,25 +1,6 @@
 #lang racket
 
-(define make-pair
-  (lambda (a b)
-    (cons a (cons b '()))))
-
-(define zip
-  (lambda (a b)
-    (cond
-      ((null? a) '())
-      (else
-        (cons (make-pair (car a) (car b))
-              (zip (cdr a) (cdr b)))))))
-
-(define main
-  (lambda () 
-    (let ([posts-directory (read-command-line)])
-      (let (
-            [titles (titles-from-directory posts-directory)]
-            [paths (post-files-from-directory posts-directory)])
-        (toc-from-titles (zip titles paths))
-))))
+(require "utils.rkt")
 
 (define titles-from-directory
   (lambda (posts-directory)
@@ -62,13 +43,6 @@
       (read-line fh 'any)
 )))
 
-
-(define first-of
-  (lambda (l) (car l)))
-
-(define second-of
-  (lambda (l) (car (cdr l))))
-
 (define list-item-from-title-path
   (lambda (title-path)
     (let ([title (first-of title-path)]
@@ -90,4 +64,4 @@
                    (list-items-from-titles titles))
       "\n")))
 
-(provide zip make-pair first-of second-of)
+(provide is-markdown? first-line-from-post)

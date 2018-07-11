@@ -3,27 +3,20 @@
 (require rackunit
          "napoleon.rkt")
 
-(define utils-tests
+(define napoleon-tests
   (test-suite
-  "Tests for napoleon utilities"
-
-  (check-equal? 
-    (zip '(1 2 3) '("a" "b" "c")) '((1 "a") (2 "b") (3 "c"))
-  "Zipping lists into pairs")
-
-  (check-equal? 
-    (make-pair "first" "second") '("first" "second")
-  "Creating pairs")
+  "Napoleon tests"
 
   (check-equal?
-    (first-of '("first" "second")) "first"
-  "Getting the first of a pair")
+    (is-markdown? "/some/path/to/a/file.md") #t
+  "returns true for paths ending in .md")
 
   (check-equal?
-    (second-of '("first" "second")) "second"
-  "Getting the second of a pair")
-))
+    (is-markdown? "/some/path/to/a/file.txt") #f
+  "returns false for paths not ending in .md")
+  )
+)
 
 (require rackunit/text-ui)
  
-(run-tests utils-tests)
+(run-tests napoleon-tests)
